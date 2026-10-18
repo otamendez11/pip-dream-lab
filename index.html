@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIP'S DREAM LAB :: Junior Dream Engineer @ The Midnight Nursery</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    background: #0a0a2e;
+    background-image:
+      radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+      radial-gradient(2px 2px at 60px 120px, #fff, transparent),
+      radial-gradient(1px 1px at 120px 60px, #fff, transparent),
+      radial-gradient(2px 2px at 200px 200px, #fff, transparent),
+      radial-gradient(1px 1px at 300px 90px, #fff, transparent),
+      radial-gradient(2px 2px at 380px 160px, #fff, transparent),
+      radial-gradient(1px 1px at 450px 40px, #fff, transparent),
+      radial-gradient(2px 2px at 520px 220px, #ffeb3b, transparent),
+      linear-gradient(#0a0a2e, #1a0b3d 60%, #2b1055);
+    background-attachment: fixed;
+    color: #fff8dc;
+    font-family: "Comic Sans MS", "Comic Sans", "Chalkboard SE", cursive;
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><text y='20' font-size='20'>✨</text></svg>"), auto;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 12px 60px; }
+  h1, h2, h3 { color: #ffeb3b; text-shadow: 2px 2px 0 #b26ab2, 4px 4px 0 #000; letter-spacing: 1px; }
+  h1 { font-size: 2.6em; text-align: center; margin: 10px 0 0; }
+  .tagline { text-align: center; color: #7df9ff; font-size: 1.15em; margin: 4px 0 12px; }
+  marquee.top { background: #ff6ec7; color: #0a0a2e; font-weight: bold; padding: 6px 0; border-top: 3px solid #fff; border-bottom: 3px solid #fff; }
+  .badges { text-align: center; margin: 10px 0; font-size: .85em; }
+  .badges span { display: inline-block; background: #222; border: 2px outset #888; color: #7df9ff; padding: 3px 10px; margin: 3px; }
+  nav { text-align: center; margin: 14px 0; }
+  nav a {
+    display: inline-block; margin: 4px; padding: 8px 16px;
+    background: linear-gradient(#4a4aff, #1a1a8a); color: #fff; text-decoration: none;
+    border: 3px outset #888; font-weight: bold;
+  }
+  nav a:hover { background: linear-gradient(#ff6ec7, #a02060); }
+  .panel {
+    background: rgba(10, 10, 46, .82);
+    border: 3px ridge #b26ab2;
+    padding: 18px; margin: 22px 0;
+    box-shadow: 0 0 18px #b26ab2;
+  }
+  .hero-img { display: block; margin: 12px auto; max-width: 420px; width: 90%; border: 5px ridge #ffeb3b; box-shadow: 0 0 25px #ffeb3b; }
+  .counter-box { text-align: center; margin: 10px 0; color: #7df9ff; }
+  .odometer { display: inline-block; background: #000; border: 3px inset #888; padding: 4px 10px; font-family: monospace; font-size: 1.6em; color: #39ff14; letter-spacing: 4px; }
+  .proj { border: 2px dashed #7df9ff; padding: 12px; margin: 12px 0; background: rgba(125,249,255,.06); }
+  .proj h3 { margin-top: 0; color: #7df9ff; }
+  .tabs { text-align: center; margin-bottom: 10px; }
+  .tabs button {
+    font-family: inherit; font-weight: bold; margin: 4px; padding: 8px 14px;
+    background: #2b1055; color: #ffeb3b; border: 3px outset #888; cursor: pointer;
+  }
+  .tabs button.active, .tabs button:hover { background: #ff6ec7; color: #0a0a2e; }
+  .story { display: none; line-height: 1.55; }
+  .story.active { display: block; }
+  .mood-btn {
+    font-family: inherit; font-size: 1.05em; margin: 6px; padding: 10px 18px;
+    background: linear-gradient(#ffeb3b, #c9a800); color: #0a0a2e; font-weight: bold;
+    border: 3px outset #888; cursor: pointer;
+  }
+  .mood-btn:hover { transform: scale(1.06); }
+  #dreamResult {
+    display: none; margin-top: 14px; padding: 14px;
+    border: 3px dotted #ffeb3b; background: rgba(255,235,59,.08);
+    color: #fff8dc; font-size: 1.1em; line-height: 1.5;
+  }
+  .log-entry { border-bottom: 1px dotted #7df9ff; padding: 8px 0; }
+  .log-entry b { color: #ff6ec7; }
+  input[type=text] { font-family: inherit; padding: 8px; width: 70%; max-width: 320px; background: #000; color: #39ff14; border: 2px inset #888; }
+  .bigbtn {
+    font-family: inherit; font-weight: bold; font-size: 1.1em; padding: 10px 20px; margin: 6px;
+    border: 3px outset #888; cursor: pointer;
+  }
+  #chaosBtn { background: linear-gradient(90deg, red, orange, yellow, green, blue, violet); color: #000; }
+  #muteBtn {
+    position: fixed; top: 10px; right: 10px; z-index: 9999;
+    background: #ffeb3b; color: #0a0a2e; font-weight: bold; font-family: inherit;
+    border: 3px outset #888; padding: 8px 12px; cursor: pointer;
+  }
+  .footer { text-align: center; color: #8f8fbf; font-size: .85em; margin-top: 30px; }
+  .sparkle { position: fixed; pointer-events: none; z-index: 9998; font-size: 14px; }
+  /* CHAOS MODE */
+  body.chaos .wrap > * { animation: wobble .5s infinite; }
+  body.chaos { animation: hue 3s infinite linear; }
+  body.chaos h1, body.chaos h2 { animation: spinny 2s infinite linear; }
+  @keyframes wobble { 0%{transform:rotate(-1deg)} 50%{transform:rotate(1deg) scale(1.01)} 100%{transform:rotate(-1deg)} }
+  @keyframes hue { to { filter: hue-rotate(360deg); } }
+  @keyframes spinny { to { transform: rotate(360deg); } }
+  #secret { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 10000; text-align: center; padding-top: 18vh; }
+  #secret .box { display: inline-block; border: 5px ridge #ffeb3b; background: #1a0b3d; padding: 30px; max-width: 90%; }
+  @media (max-width: 600px) {
+    h1 { font-size: 1.7em; }
+    nav a { display: block; margin: 6px auto; max-width: 280px; }
+    .hero-img { max-width: 94%; }
+  }
+</style>
+</head>
+<body>
+<button id="muteBtn" title="mute / unmute">🔊 SOUND: ON</button>
+<marquee class="top" scrollamount="8">✨ WELCOME TO THE MIDNIGHT NURSERY ✨ PIP'S DREAM LAB ✨ NOW DELIVERING DREAMS NIGHTLY ✨ EST. 1997 ✨</marquee>
+<div class="wrap">
+
+  <h1>🌙 PIP'S DREAM LAB 🌙</h1>
+  <p class="tagline">Pip — Junior Dream Engineer @ <b>The Midnight Nursery</b></p>
+  <div class="badges">
+    <span>⭐ BEST VIEWED AT 800x600 ⭐</span>
+    <span>🚧 UNDER CONSTRUCTION (since 1997) 🚧</span>
+    <span>💤 100% RECYCLED NIGHTMARES 💤</span>
+  </div>
+
+  <div class="counter-box">
+    you are dream-visitor n° <span class="odometer" id="odometer">000000</span>
+  </div>
+
+  <nav>
+    <a href="#about">👶 ABOUT PIP</a>
+    <a href="#projects">🔧 PROJECTS</a>
+    <a href="#story">📖 STORY</a>
+    <a href="#reading">🔮 DREAM READING</a>
+    <a href="#log">💭 DREAM LOG</a>
+  </nav>
+
+  <img id="pipHero" class="hero-img" src="assets/pip-hero.webp" alt="Pip, the skull-faced baby, sitting on a crescent moon">
+
+  <div class="panel" id="about">
+    <h2>👶 ABOUT PIP</h2>
+    <p><b>Name:</b> Pip &nbsp;|&nbsp; <b>Species:</b> baby (skull-faced) &nbsp;|&nbsp; <b>Job:</b> Junior Dream Engineer &nbsp;|&nbsp; <b>Workplace:</b> The Midnight Nursery</p>
+    <p>Pip is a baby with a little skull face who works the night shift at the <b>Midnight Nursery</b> — the place where dreams are built, bottled and delivered. His employee badge says <i>JUNIOR</i>, but the moon trusts him with the big lever. He runs on warm milk, cold starlight, and an unlimited supply of curiosity.</p>
+    <p><i>Skulls, he says, are just faces that finished growing up early.</i></p>
+  </div>
+
+  <div class="panel" id="projects">
+    <h2>🔧 PIP'S PROJECTS</h2>
+    <div class="proj">
+      <h3>🎵 1. The Lullaby Engine</h3>
+      <p>A brass-and-moonbeam machine that composes a brand-new lullaby for every baby, every night. <b>No repeats since 1997.</b> Pip tunes it by ear — his very big ears.</p>
+    </div>
+    <div class="proj">
+      <h3>♻️ 2. Nightmare Recycling Program</h3>
+      <p>Scary dreams go in, shooting stars come out. <b>100% recycled. 0% scary.</b> Last month Pip recycled 40,000 nightmares into one spectacular meteor shower.</p>
+    </div>
+    <div class="proj">
+      <h3>☁️ 3. The Nap Cloud Network</h3>
+      <p>A fleet of certified nap-clouds, shepherded nightly across time zones so <b>nobody naps alone</b>. Pip personally fluffs every cloud before departure.</p>
+    </div>
+    <div class="proj">
+      <h3>📦 4. Dream Delivery Service</h3>
+      <p>Same-night delivery of custom dreams, anywhere on Earth. If your dream arrives late, <b>the next nightmare is free</b>. Pip has never been late. Not once.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="story">
+    <h2>📖 THE STORY OF PIP <small>(click the chapters!)</small></h2>
+    <div class="tabs">
+      <button class="tabbtn active" data-t="s1">🌑 ORIGIN</button>
+      <button class="tabbtn" data-t="s2">🍼 THE NURSERY</button>
+      <button class="tabbtn" data-t="s3">🌟 THE BIG NIGHT</button>
+    </div>
+    <div class="story active" id="s1">
+      <p>Pip was born on the quietest night of the year, when the moon forgot to shine and the stars held their breath. The nurses say his first word was a yawn and his first toy was a dreamcatcher. Nobody knows why his face is a little skull — the Sandman claims it helps babies take him seriously. Pip doesn't mind. He was employee-of-the-month before he could walk, mostly because nobody else applied for the night shift.</p>
+    </div>
+    <div class="story" id="s2">
+      <p>The Midnight Nursery floats somewhere between 11:59 PM and the first birdsong. Its cribs are clouds, its nightlights are bottled fireflies, and its lullabies are composed fresh nightly. Pip is the Junior Dream Engineer: he tunes the Lullaby Engine, untangles nightmare knots, and taste-tests every dream before delivery. His desk is a crescent moon. His stapler is a shooting star. His performance reviews are written in lullaby form.</p>
+    </div>
+    <div class="story" id="s3">
+      <p>Last Tuesday the Dream Reservoir ran dry — three million sleepers, zero dreams left. While the senior engineers panicked, Pip did what babies do best: he napped. In his nap he dreamed a dream about dreaming, bottled it, and poured it back into the reservoir. By dawn every sleeper got an extra dream, free of charge. Management promoted him on the spot. His new title is still Junior. He prefers it that way.</p>
+    </div>
+  </div>
+
+  <div class="panel" id="reading">
+    <h2>🔮 PIP READS YOUR DREAM</h2>
+    <p>Pip is staring at you right now. Tell him your mood and he will reveal <b>tonight's dream, custom-made for you</b>:</p>
+    <div style="text-align:center">
+      <button class="mood-btn" data-m="sleepy">😴 SLEEPY</button>
+      <button class="mood-btn" data-m="curious">🤔 CURIOUS</button>
+      <button class="mood-btn" data-m="brave">🦁 BRAVE</button>
+    </div>
+    <div id="dreamResult"></div>
+  </div>
+
+  <div class="panel" id="log">
+    <h2>💭 THE DREAM LOG <small>(visitors' guestbook)</small></h2>
+    <p>Leave a dream for the next visitor. Pip reads every single one. <i>He has nothing else to do at 3 AM.</i></p>
+    <div id="logEntries"></div>
+    <p style="margin-top:12px">
+      <input type="text" id="logName" placeholder="your name" maxlength="24">
+      <input type="text" id="logText" placeholder="last night I dreamed..." maxlength="140" style="width:90%;max-width:480px;margin-top:6px">
+      <br><br>
+      <button class="bigbtn" id="logBtn" style="background:#ff6ec7;color:#0a0a2e">✍️ SIGN THE DREAM LOG</button>
+    </p>
+  </div>
+
+  <div class="panel" style="text-align:center">
+    <h2>🎪 BONUS ATTRACTIONS</h2>
+    <button class="bigbtn" id="chaosBtn">🌀 ACTIVATE CHAOS MODE (+5 pts)</button>
+    <p style="font-size:.85em;color:#8f8fbf">warning: chaos mode may cause extreme early-web symptoms</p>
+  </div>
+
+  <div class="footer">
+    <p>© 1997–2026 Pip's Dream Lab · The Midnight Nursery · made with 💤 and dial-up</p>
+    <p><i>this page intentionally contains one (1) secret</i></p>
+    <p style="font-size:.75em">credits: art generated for this project · sounds: WebAudio bleeps, synthesized live · fonts: your computer's finest cursive</p>
+  </div>
+
+</div>
+
+<div id="secret">
+  <div class="box">
+    <h2>🤫 YOU FOUND PIP'S SECRET 🤫</h2>
+    <p>The moon is actually a giant nightlight,<br>and Pip is the one who changes its batteries.<br><br><i>He has never told a soul. Until now.</i></p>
+    <button class="bigbtn" id="secretClose" style="background:#ffeb3b">shhh… close</button>
+  </div>
+</div>
+
+<script>
+/* ===== SOUND (WebAudio bleeps, mutable) ===== */
+let soundOn = true;
+let actx = null;
+function beep(freq, dur) {
+  if (!soundOn) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = 'square'; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.06, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + dur);
+    o.connect(g); g.connect(actx.destination);
+    o.start(); o.stop(actx.currentTime + dur);
+  } catch (e) {}
+}
+document.getElementById('muteBtn').addEventListener('click', function () {
+  soundOn = !soundOn;
+  this.textContent = soundOn ? '🔊 SOUND: ON' : '🔇 SOUND: OFF';
+  beep(660, 0.08);
+});
+function clickSound() { beep(440 + Math.random() * 440, 0.07); }
+
+/* ===== HIT COUNTER (odometer) ===== */
+let hits = parseInt(localStorage.getItem('pip_hits') || '1042', 10) + 1;
+localStorage.setItem('pip_hits', hits);
+document.getElementById('odometer').textContent = String(hits).padStart(6, '0');
+
+/* ===== SPARKLE CURSOR TRAIL ===== */
+const sparkChars = ['✨', '⭐', '💫', '🌟'];
+document.addEventListener('mousemove', function (e) {
+  if (Math.random() > 0.25) return;
+  const s = document.createElement('span');
+  s.className = 'sparkle';
+  s.textContent = sparkChars[Math.floor(Math.random() * sparkChars.length)];
+  s.style.left = (e.clientX + (Math.random() * 20 - 10)) + 'px';
+  s.style.top = (e.clientY + (Math.random() * 20 - 10)) + 'px';
+  document.body.appendChild(s);
+  let op = 1;
+  const fade = setInterval(() => {
+    op -= 0.08; s.style.opacity = op;
+    s.style.top = (parseFloat(s.style.top) - 1.5) + 'px';
+    if (op <= 0) { clearInterval(fade); s.remove(); }
+  }, 40);
+});
+
+/* ===== STORY TABS ===== */
+document.querySelectorAll('.tabbtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    clickSound();
+    document.querySelectorAll('.tabbtn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.story').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.t).classList.add('active');
+  });
+});
+
+/* ===== DREAM READING (immersion moment) ===== */
+const dreams = {
+  sleepy: "🌙 Pip gazes into your heavy eyelids and declares: <b>tonight you will dream of a pillow fort the size of a city</b>, guarded by sleepy dragons who snore in perfect harmony. Room service brings warm milk at midnight. Checkout is whenever you wake up.",
+  curious: "🔮 Pip tilts his little skull and sees: <b>tonight you will dream of a library where every book is a door</b>. Behind the blue one, the ocean applauds. Behind the red one, your childhood dog finally learned to talk. He says you owe him a walk.",
+  brave: "🦁 Pip nods with respect: <b>tonight you will dream of riding a comet bareback</b>, steering with starlight reins. Halfway through, the comet gets scared — and YOU comfort IT. Pip is taking notes. He may hire you."
+};
+document.querySelectorAll('.mood-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    clickSound();
+    beep(880, 0.15); setTimeout(() => beep(1174, 0.2), 120);
+    const box = document.getElementById('dreamResult');
+    box.innerHTML = dreams[btn.dataset.m];
+    box.style.display = 'block';
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+});
+
+/* ===== DREAM LOG (guestbook, localStorage) ===== */
+function esc(s) { return s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function renderLog() {
+  const entries = JSON.parse(localStorage.getItem('pip_log') || '[]');
+  const box = document.getElementById('logEntries');
+  if (!entries.length) {
+    box.innerHTML = '<p><i>No dreams yet. The log is emptier than Pip\'s bottle at dawn.</i></p>';
+    return;
+  }
+  box.innerHTML = entries.slice().reverse().map(e =>
+    '<div class="log-entry">💭 <b>' + esc(e.n) + '</b> dreamed: <i>' + esc(e.t) + '</i></div>'
+  ).join('');
+}
+document.getElementById('logBtn').addEventListener('click', () => {
+  const n = document.getElementById('logName').value.trim() || 'Anonymous Dreamer';
+  const t = document.getElementById('logText').value.trim();
+  if (!t) { beep(180, 0.25); alert('Pip needs an actual dream! Type one first.'); return; }
+  const entries = JSON.parse(localStorage.getItem('pip_log') || '[]');
+  entries.push({ n: n.slice(0, 24), t: t.slice(0, 140) });
+  localStorage.setItem('pip_log', JSON.stringify(entries.slice(-50)));
+  document.getElementById('logText').value = '';
+  clickSound(); beep(990, 0.12);
+  renderLog();
+});
+renderLog();
+
+/* ===== CHAOS MODE ===== */
+let chaos = false;
+document.getElementById('chaosBtn').addEventListener('click', function () {
+  chaos = !chaos;
+  document.body.classList.toggle('chaos', chaos);
+  this.textContent = chaos ? '🛑 DEACTIVATE CHAOS (coward)' : '🌀 ACTIVATE CHAOS MODE (+5 pts)';
+  for (let i = 0; i < 5; i++) setTimeout(() => beep(200 + i * 150, 0.1), i * 90);
+});
+
+/* ===== EASTER EGG: Konami code ===== */
+const seq = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let pos = 0;
+document.addEventListener('keydown', e => {
+  pos = (e.key === seq[pos]) ? pos + 1 : (e.key === seq[0] ? 1 : 0);
+  if (pos === seq.length) { pos = 0; showSecret(); }
+});
+/* backup egg: click Pip's portrait 5 times */
+let pipClicks = 0;
+document.getElementById('pipHero').addEventListener('click', () => {
+  pipClicks++;
+  beep(500 + pipClicks * 100, 0.08);
+  if (pipClicks === 5) { pipClicks = 0; showSecret(); }
+});
+function showSecret() {
+  document.getElementById('secret').style.display = 'block';
+  for (let i = 0; i < 8; i++) setTimeout(() => beep(700 + i * 80, 0.12), i * 100);
+}
+document.getElementById('secretClose').addEventListener('click', () => {
+  document.getElementById('secret').style.display = 'none';
+  clickSound();
+});
+
+/* click sounds on nav links */
+document.querySelectorAll('nav a').forEach(a => a.addEventListener('click', clickSound));
+</script>
+</body>
+</html>
